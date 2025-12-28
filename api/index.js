@@ -14,6 +14,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 
+app.get('/', { connection: 'OK' })
 app.use(authRoutes)
 app.use(todoRoutes)
 
