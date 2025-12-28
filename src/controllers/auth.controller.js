@@ -1,4 +1,3 @@
-import { connection } from "../config/db.js"
 import { createUser, findUserByEmail, validateUser } from "../services/auth.service.js"
 import { signToken } from "../utils/jwt.js"
 

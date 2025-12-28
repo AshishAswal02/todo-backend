@@ -2,8 +2,8 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import "dotenv/config"
-import authRoutes from "./src/routes/auth.routes.js"
-import todoRoutes from "./src/routes/todo.routes.js"
+import authRoutes from "./../src/routes/auth.routes.js"
+import todoRoutes from "./../src/routes/todo.routes.js"
 
 const app = express()
 
@@ -17,4 +17,4 @@ app.use(cookieParser())
 app.use(authRoutes)
 app.use(todoRoutes)
 
-export default app  
+export default app 
