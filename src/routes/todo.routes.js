@@ -10,7 +10,7 @@ import { verifyJWTtoken } from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 
-router.get("/", verifyJWTtoken, getTodos)
+router.get("/list", verifyJWTtoken, getTodos)
 router.get("/list/:id", verifyJWTtoken, getTodoById)
 router.post("/add",verifyJWTtoken, addTodo)
 router.delete("/delete/:id",verifyJWTtoken, deleteTodo)
