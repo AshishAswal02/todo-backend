@@ -11,6 +11,10 @@ app.use(express.json())
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
 app.use(cookieParser())
 
+app.get("/", (_, res) => {
+  res.json({ status: "OK" })
+})
+
 app.use(authRoutes)
 app.use(todoRoutes)
 
