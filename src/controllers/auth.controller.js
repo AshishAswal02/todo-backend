@@ -44,7 +44,7 @@ export const login = async (req, res) => {
         if (!email || !password) res.status(400).json({ message: "Email and password are mandatory" })
 
         const user = await validateUser(req.body)
-        if (!user) return res.status(404).send({ message: "Invalid credentials" })
+        if (!user) return res.status(404).send({ message: "No such user found" })
 
         let token
         try {
@@ -71,10 +71,13 @@ export const login = async (req, res) => {
 
 }
 
-export const logout = (_, res) => {
+export const logout = (req, res) => {
+    const isLocalhost = req.headersDistinct.host[0]
     res.clearCookie("token", {
         httpOnly: true,
         sameSite: "lax",
+        secure: isLocalhost ? false : true,
+        sameSite: isLocalhost ? "lax" : "none",
     })
     res.status(200).json({ message: "Logged out successfully" })
 }
