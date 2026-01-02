@@ -71,15 +71,33 @@ export const login = async (req, res) => {
 
 }
 
-export const logout = (req, res) => {
-    const isLocalhost = req.headersDistinct.host[0]
-    res.clearCookie("token", {
-        httpOnly: true,
-        path: "/",
-        secure: isLocalhost ? false : true,
-        sameSite: isLocalhost ? "lax" : "none",
-    })
-    res.status(200).json({ message: "Logged out successfully" })
+
+const getCookieOptions = (req) => {
+  const isSecureRequest =
+    req.secure || req.headers["x-forwarded-proto"] === "https"
+
+  return {
+    httpOnly: true,
+    path: "/",
+    secure: isSecureRequest,
+    sameSite: isSecureRequest ? "none" : "lax",
+  }
 }
+
+export const logout = (req, res) => {
+  res.clearCookie("token", getCookieOptions(req))
+  res.status(200).json({ message: "Logged out successfully" })
+}
+
+// export const logout = (req, res) => {
+//     const isLocalhost = req.headersDistinct.host[0]
+//     res.clearCookie("token", {
+//         httpOnly: true,
+//         path: "/",
+//         secure: isLocalhost ? false : true,
+//         sameSite: isLocalhost ? "lax" : "none",
+//     })
+//     res.status(200).json({ message: "Logged out successfully" })
+// }
 
 
