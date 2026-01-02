@@ -75,7 +75,7 @@ export const logout = (req, res) => {
     const isLocalhost = req.headersDistinct.host[0]
     res.clearCookie("token", {
         httpOnly: true,
-        sameSite: "lax",
+        path: "/",
         secure: isLocalhost ? false : true,
         sameSite: isLocalhost ? "lax" : "none",
     })
