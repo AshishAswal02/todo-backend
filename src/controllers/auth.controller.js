@@ -1,6 +1,18 @@
 import { createUser, findUserByEmail, validateUser } from "../services/auth.service.js"
 import { signToken } from "../utils/jwt.js"
 
+const getCookieOptions = (req) => {
+  const isSecureRequest =
+    req.secure || req.headers["x-forwarded-proto"] === "https"
+
+  return {
+    httpOnly: true,
+    path: "/",
+    secure: isSecureRequest,
+    sameSite: isSecureRequest ? "none" : "lax",
+  }
+}
+
 export const signup = async (req, res) => {
     try {
         const { email, password, name } = req.body
@@ -19,12 +31,7 @@ export const signup = async (req, res) => {
             return res.status(500).json({ message: "Token generation failed" })
         }
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            path: "/",
-            secure: true,
-            sameSite: "none"
-        })
+        res.cookie("token", token, getCookieOptions(req))
 
         res.status(201).json({
             message: "User registered successfully",
@@ -72,17 +79,7 @@ export const login = async (req, res) => {
 }
 
 
-const getCookieOptions = (req) => {
-  const isSecureRequest =
-    req.secure || req.headers["x-forwarded-proto"] === "https"
 
-  return {
-    httpOnly: true,
-    path: "/",
-    secure: isSecureRequest,
-    sameSite: isSecureRequest ? "none" : "lax",
-  }
-}
 
 export const logout = (req, res) => {
   res.clearCookie("token", getCookieOptions(req))
